@@ -16,7 +16,19 @@ import UserRegister from "./pages/user/Register";
 // Admin
 import AdminLogin from "./pages/admin/Login";
 import AdminRegister from "./pages/admin/Register";
+import AdminDashboard from "./pages/admin/Dashboard";
+import ProtectedRoute from "./components/auth/ProtectedRoute";
 
+import Users from "./pages/admin/Users";
+import Sellers from "./pages/admin/Sellers";
+import AdminBooks from "./pages/admin/Books";
+import Orders from "./pages/admin/Orders";
+//sellers
+import SellerRegister from "./pages/seller/Register";
+import SellerLogin from "./pages/seller/Login";
+import SellerDashboard from "./pages/seller/Dashboard";
+import AddBook from "./pages/seller/AddBook";
+import Products from "./pages/seller/Products";
 function App() {
   return (
     <BrowserRouter>
@@ -33,7 +45,79 @@ function App() {
 
           <Route path="/admin/login" element={<AdminLogin />} />
           <Route path="/admin/register" element={<AdminRegister />} />
+          <Route
+            path="/admin/dashboard"
+            element={
+            <ProtectedRoute role="admin">
+            <AdminDashboard />
+            </ProtectedRoute>
+          }
+          />
+          <Route
+  path="/admin/users"
+  element={
+    <ProtectedRoute role="admin">
+      <Users />
+    </ProtectedRoute>
+  }
+/>
 
+<Route
+  path="/admin/sellers"
+  element={
+    <ProtectedRoute role="admin">
+      <Sellers />
+    </ProtectedRoute>
+  }
+/>
+
+<Route
+  path="/admin/books"
+  element={
+    <ProtectedRoute role="admin">
+      <AdminBooks />
+    </ProtectedRoute>
+  }
+/>
+
+<Route
+  path="/admin/orders"
+  element={
+    <ProtectedRoute role="admin">
+      <Orders />
+    </ProtectedRoute>
+  }
+/>
+<Route
+    path="/seller/register"
+    element={<SellerRegister />}
+/>
+<Route path="/seller/login" element={<SellerLogin />} />
+
+<Route
+  path="/seller/dashboard"
+  element={
+    <ProtectedRoute role="seller">
+      <SellerDashboard />
+    </ProtectedRoute>
+  }
+/>
+<Route
+  path="/seller/add-book"
+  element={
+    <ProtectedRoute role="seller">
+      <AddBook />
+    </ProtectedRoute>
+  }
+/>
+<Route
+  path="/seller/products"
+  element={
+    <ProtectedRoute role="seller">
+      <Products />
+    </ProtectedRoute>
+  }
+/>
           <Route path="*" element={<NotFound />} />
         </Routes>
       </MainLayout>
