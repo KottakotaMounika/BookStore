@@ -7,7 +7,9 @@ function Cart() {
   const [cart, setCart] = useState([]);
 
   useEffect(() => {
-    fetchCart();
+    if (user) {
+      fetchCart();
+    }
   }, []);
 
   const fetchCart = async () => {
@@ -19,6 +21,58 @@ function Cart() {
     }
   };
 
+  // Increase Quantity
+  const increaseQty = async (cartId) => {
+    try {
+      await API.put(`/cart/increase/${cartId}`);
+      fetchCart();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  // Decrease Quantity
+  const decreaseQty = async (cartId) => {
+    try {
+      await API.put(`/cart/decrease/${cartId}`);
+      fetchCart();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  // Remove Item
+  const removeItem = async (cartId) => {
+    const confirmDelete = window.confirm(
+      "Remove this book from cart?"
+    );
+
+    if (!confirmDelete) return;
+
+    try {
+      await API.delete(`/cart/remove/${cartId}`);
+      fetchCart();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  // Checkout
+  const checkout = async () => {
+    try {
+      const res = await API.post("/orders/checkout", {
+        userId: user.id,
+      });
+
+      alert(res.data.message);
+
+      fetchCart();
+    } catch (error) {
+      console.log(error);
+      alert("Checkout Failed");
+    }
+  };
+
   const total = cart.reduce((sum, item) => {
     return sum + item.book.price * item.quantity;
   }, 0);
@@ -26,42 +80,86 @@ function Cart() {
   return (
     <div className="container mt-5">
 
-      <h2>My Cart</h2>
-
-      <hr />
+      <h2 className="mb-4">🛒 My Cart</h2>
 
       {cart.length === 0 ? (
-        <h4>Your Cart is Empty</h4>
+        <div className="alert alert-warning">
+          Your Cart is Empty
+        </div>
       ) : (
         <>
           {cart.map((item) => (
             <div
-              className="card shadow p-3 mb-3"
+              className="card shadow mb-4"
               key={item._id}
             >
-              <h4>{item.book.title}</h4>
+              <div className="card-body">
 
-              <p>
-                <strong>Author:</strong> {item.book.author}
-              </p>
+                <h4>{item.book.title}</h4>
 
-              <p>
-                <strong>Price:</strong> ₹{item.book.price}
-              </p>
+                <p>
+                  <strong>Author :</strong> {item.book.author}
+                </p>
 
-              <p>
-                <strong>Quantity:</strong> {item.quantity}
-              </p>
+                <p>
+                  <strong>Category :</strong> {item.book.category}
+                </p>
+
+                <p>
+                  <strong>Price :</strong> ₹{item.book.price}
+                </p>
+
+                <div className="d-flex align-items-center mb-3">
+
+                  <button
+                    className="btn btn-danger"
+                    onClick={() =>
+                      decreaseQty(item._id)
+                    }
+                  >
+                    -
+                  </button>
+
+                  <h5 className="mx-3 mt-2">
+                    {item.quantity}
+                  </h5>
+
+                  <button
+                    className="btn btn-success"
+                    onClick={() =>
+                      increaseQty(item._id)
+                    }
+                  >
+                    +
+                  </button>
+
+                </div>
+
+                <button
+                  className="btn btn-outline-danger"
+                  onClick={() =>
+                    removeItem(item._id)
+                  }
+                >
+                  Remove
+                </button>
+
+              </div>
             </div>
           ))}
 
-          <hr />
+          <div className="card shadow p-4">
 
-          <h3>Total : ₹{total}</h3>
+            <h3>Total : ₹{total}</h3>
 
-          <button className="btn btn-success mt-3">
-            Checkout
-          </button>
+            <button
+              className="btn btn-primary mt-3"
+              onClick={checkout}
+            >
+              Checkout
+            </button>
+
+          </div>
         </>
       )}
     </div>
