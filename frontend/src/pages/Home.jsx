@@ -1,98 +1,74 @@
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import API from "../services/api";
 
 function Home() {
+  const [books, setBooks] = useState([]);
+
+  useEffect(() => {
+    fetchBooks();
+  }, []);
+
+  const fetchBooks = async () => {
+    try {
+      const res = await API.get("/books");
+      setBooks(res.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
-    <>
-      {/* Hero Section */}
-      <section className="py-5" style={{ background: "#F8F1DE" }}>
-        <div className="container text-center">
+    <div className="container mt-5">
 
-          <h1
-            className="fw-bold"
-            style={{ fontSize: "3rem", color: "#8B4513" }}
-          >
-            Your Gateway to Infinite Stories
-          </h1>
+      <h2 className="mb-4 text-center">
+        📚 Welcome to BookVerse
+      </h2>
 
-          <p className="mt-3 text-secondary">
-            Discover captivating books, connect with passionate sellers,
-            and fuel your love for reading only at <b>BookVerse</b>.
-          </p>
+      <div className="row">
 
-          <Link
-            to="/books"
-            className="btn mt-3 px-4"
-            style={{
-              backgroundColor: "#C79A63",
-              color: "white",
-              borderRadius: "25px",
-            }}
-          >
-            Start Exploring
-          </Link>
+        {books.length === 0 ? (
+          <h4 className="text-center">No Books Available</h4>
+        ) : (
+          books.map((book) => (
+            <div className="col-md-4 mb-4" key={book._id}>
 
-        </div>
-      </section>
+              <div className="card shadow h-100">
 
-      {/* Category Section */}
-      <section
-        className="py-5"
-        style={{ background: "#FFFBEF" }}
-      >
-        <div className="container">
+                <div className="card-body">
 
-          <h2
-            className="text-center mb-5 fw-bold"
-            style={{ color: "#8B4513" }}
-          >
-            Explore by Category
-          </h2>
+                  <h4>{book.title}</h4>
 
-          <div className="row text-center">
+                  <p>
+                    <strong>Author:</strong> {book.author}
+                  </p>
 
-            <div className="col-md-3 mb-3">
-              <div className="card shadow border-0 p-4">
-                <h1>📖</h1>
-                <h5>Fiction</h5>
+                  <p>
+                    <strong>Category:</strong> {book.category}
+                  </p>
+
+                  <p>
+                    <strong>Price:</strong> ₹{book.price}
+                  </p>
+
+                  <Link
+                    to={`/book/${book._id}`}
+                    className="btn btn-primary"
+                  >
+                    View Details
+                  </Link>
+
+                </div>
+
               </div>
+
             </div>
+          ))
+        )}
 
-            <div className="col-md-3 mb-3">
-              <div className="card shadow border-0 p-4">
-                <h1>🔬</h1>
-                <h5>Science</h5>
-              </div>
-            </div>
+      </div>
 
-            <div className="col-md-3 mb-3">
-              <div className="card shadow border-0 p-4">
-                <h1>👤</h1>
-                <h5>Biography</h5>
-              </div>
-            </div>
-
-            <div className="col-md-3 mb-3">
-              <div className="card shadow border-0 p-4">
-                <h1>🧒</h1>
-                <h5>Children's Books</h5>
-              </div>
-            </div>
-
-          </div>
-
-        </div>
-      </section>
-
-      {/* Contact Section */}
-      <section
-        className="text-center py-5"
-        style={{ background: "#F8F1DE" }}
-      >
-        <button className="btn btn-dark">
-          Contact Us
-        </button>
-      </section>
-    </>
+    </div>
   );
 }
 

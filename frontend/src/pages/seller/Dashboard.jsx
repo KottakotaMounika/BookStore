@@ -6,9 +6,11 @@ function Dashboard() {
   const user = JSON.parse(localStorage.getItem("user"));
 
   const [bookCount, setBookCount] = useState(0);
+  const [orderCount, setOrderCount] = useState(0);
 
   useEffect(() => {
     fetchBooks();
+    fetchOrders();
   }, []);
 
   const fetchBooks = async () => {
@@ -20,9 +22,17 @@ function Dashboard() {
     }
   };
 
+  const fetchOrders = async () => {
+    try {
+      const res = await API.get(`/orders/seller/${user.id}`);
+      setOrderCount(res.data.length);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <SellerLayout>
-
       <h2>Welcome Seller</h2>
 
       <h3>{user.name}</h3>
@@ -30,7 +40,6 @@ function Dashboard() {
       <hr />
 
       <div className="row">
-
         <div className="col-md-4">
           <div className="card shadow p-3">
             <h4>My Books</h4>
@@ -41,12 +50,10 @@ function Dashboard() {
         <div className="col-md-4">
           <div className="card shadow p-3">
             <h4>Orders</h4>
-            <h2>0</h2>
+            <h2>{orderCount}</h2>
           </div>
         </div>
-
       </div>
-
     </SellerLayout>
   );
 }
