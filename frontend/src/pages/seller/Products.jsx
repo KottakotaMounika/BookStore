@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import API from "../../services/api";
-
+import SellerLayout from "../../layouts/SellerLayout";
 function Products() {
   const user = JSON.parse(localStorage.getItem("user"));
 
@@ -19,55 +19,57 @@ function Products() {
     }
   };
 
-  return (
-    <div className="container mt-5">
-      <h2>My Products</h2>
+ return (
+  <SellerLayout>
 
-      <div className="row mt-4">
+    <h2>My Products</h2>
 
-        {books.length === 0 ? (
-          <h4>No Books Added</h4>
-        ) : (
-          books.map((book) => (
-            <div className="col-md-4 mb-4" key={book._id}>
+    <div className="row mt-4">
 
-              <div className="card shadow h-100">
+      {books.length === 0 ? (
+        <h4>No Books Added</h4>
+      ) : (
+        books.map((book) => (
+          <div className="col-md-4 mb-4" key={book._id}>
 
-                <div className="card-body">
+            <div className="card shadow h-100">
 
-                  <h4>{book.title}</h4>
+              <div className="card-body">
 
-                  <p>
-                    <strong>Author:</strong> {book.author}
-                  </p>
+                <h4>{book.title}</h4>
 
-                  <p>
-                    <strong>Category:</strong> {book.category}
-                  </p>
+                <p>
+                  <strong>Author:</strong> {book.author}
+                </p>
 
-                  <p>
-                    <strong>Price:</strong> ₹{book.price}
-                  </p>
+                <p>
+                  <strong>Category:</strong> {book.category}
+                </p>
 
-                  <button className="btn btn-warning me-2">
-                    Edit
-                  </button>
+                <p>
+                  <strong>Price:</strong> ₹{book.price}
+                </p>
 
-                  <button className="btn btn-danger">
-                    Delete
-                  </button>
+                <button className="btn btn-warning me-2">
+                  Edit
+                </button>
 
-                </div>
+                <button className="btn btn-danger">
+                  Delete
+                </button>
 
               </div>
 
             </div>
-          ))
-        )}
 
-      </div>
+          </div>
+        ))
+      )}
+
     </div>
-  );
+
+  </SellerLayout>
+);
 }
 
 export default Products;

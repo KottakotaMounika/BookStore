@@ -1,6 +1,6 @@
 import { useState } from "react";
 import API from "../../services/api";
-
+import SellerLayout from "../../layouts/SellerLayout";
 function AddBook() {
 
   const user = JSON.parse(localStorage.getItem("user"));
@@ -45,64 +45,62 @@ function AddBook() {
     }
   };
 
-  return (
-    <div className="container mt-5">
+ return (
+  <SellerLayout>
 
-      <h2>Add Book</h2>
+    <h2>Add Book</h2>
 
-      <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit}>
 
-        <input
-          className="form-control mb-3"
-          placeholder="Title"
-          name="title"
-          value={book.title}
-          onChange={handleChange}
-        />
+      <input
+        className="form-control mb-3"
+        placeholder="Title"
+        name="title"
+        value={book.title}
+        onChange={handleChange}
+      />
 
-        <input
-          className="form-control mb-3"
-          placeholder="Author"
-          name="author"
-          value={book.author}
-          onChange={handleChange}
-        />
+      <input
+        className="form-control mb-3"
+        placeholder="Author"
+        name="author"
+        value={book.author}
+        onChange={handleChange}
+      />
 
-        <input
-          className="form-control mb-3"
-          placeholder="Category"
-          name="category"
-          value={book.category}
-          onChange={handleChange}
-        />
+      <input
+        className="form-control mb-3"
+        placeholder="Category"
+        name="category"
+        value={book.category}
+        onChange={handleChange}
+      />
 
-        <textarea
-          className="form-control mb-3"
-          placeholder="Description"
-          name="description"
-          value={book.description}
-          onChange={handleChange}
-        />
+      <textarea
+        className="form-control mb-3"
+        placeholder="Description"
+        name="description"
+        value={book.description}
+        onChange={handleChange}
+      />
 
-        <input
-          className="form-control mb-3"
-          placeholder="Price"
-          type="number"
-          name="price"
-          value={book.price}
-          onChange={handleChange}
-        />
+      <input
+        className="form-control mb-3"
+        placeholder="Price"
+        type="number"
+        name="price"
+        value={book.price}
+        onChange={handleChange}
+      />
 
-        <button
-          className="btn btn-success"
-        >
-          Add Book
-        </button>
+      <button className="btn btn-success">
+        Add Book
+      </button>
 
-      </form>
+    </form>
 
-    </div>
-  );
+  </SellerLayout>
+);
 }
 
 export default AddBook;

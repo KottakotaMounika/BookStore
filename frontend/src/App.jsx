@@ -29,6 +29,7 @@ import SellerLogin from "./pages/seller/Login";
 import SellerDashboard from "./pages/seller/Dashboard";
 import AddBook from "./pages/seller/AddBook";
 import Products from "./pages/seller/Products";
+import SellerOrders from "./pages/seller/Orders";
 function App() {
   return (
     <BrowserRouter>
@@ -115,6 +116,14 @@ function App() {
   element={
     <ProtectedRoute role="seller">
       <Products />
+    </ProtectedRoute>
+  }
+/>
+<Route
+  path="/seller/orders"
+  element={
+    <ProtectedRoute role="seller">
+      <SellerOrders />
     </ProtectedRoute>
   }
 />
